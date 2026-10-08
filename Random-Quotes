@@ -13,7 +13,13 @@ def quote_next(direction):
     
 
 def main():
-    
+
+    quotes = []
+
+    with open("quotes.txt", "r") as file:
+        for line in file:
+            quotes.append(line.rstrip())
+
     global root
     root.title("Random Quotes")
     root.configure(background="black")
