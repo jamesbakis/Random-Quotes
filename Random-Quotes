@@ -11,10 +11,7 @@ quotes = []
 
 def quote_next(direction=None):
     global quoteLabel, quotes
-    available_quotes = [
-        quote for quote in quotes if quote != quoteLabel.cget("text")
-    ]
-    quote = random.choice(available_quotes or quotes)
+    quote = random.choice(quotes)
     quoteLabel.configure(text=quote)
     
 
