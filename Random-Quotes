@@ -1,24 +1,31 @@
 import tkinter as tk
+import random
 
 root = tk.Tk()
-quoteLabel = tk.Label(root, text="Stoic Quotes")
-def quote_last(direction):
-    global quoteLabel
-    quoteLabel.configure(text="last")
+quoteLabel = tk.Label(root, wraplength=250, text="Press right to see stoic quotes")
+quotes = []
+# def quote_last(direction):
+#     global quoteLabel
+#     quoteLabel.configure(text="last")
     
 
-def quote_next(direction):
-    global quoteLabel
-    quoteLabel.configure(text="next")
+def quote_next(direction=None):
+    global quoteLabel, quotes
+    available_quotes = [
+        quote for quote in quotes if quote != quoteLabel.cget("text")
+    ]
+    quote = random.choice(available_quotes or quotes)
+    quoteLabel.configure(text=quote)
     
 
 def main():
 
-    quotes = []
+    global quotes
 
     with open("quotes.txt", "r") as file:
         for line in file:
             quotes.append(line.rstrip())
+
 
     global root
     root.title("Random Quotes")
@@ -27,8 +34,8 @@ def main():
     global quoteLabel
     quoteLabel.place(relx=0.5, rely=0.5, anchor='center')
     quoteLabel.tkraise() 
-    root.bind("<Right>", quote_next)
-    root.bind("<Left>", quote_last)
+    root.bind_all("<Right>", quote_next)
+    # root.bind("<Left>", quote_last)
     root.mainloop()
 
 if __name__ == "__main__":
