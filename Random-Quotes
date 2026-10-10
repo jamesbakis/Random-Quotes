@@ -14,12 +14,16 @@ def quote_next(direction=None):
     quote = random.choice(quotes)
     quoteLabel.configure(text=quote)
     
+def add_quote(input):
+    global quotes
+    quote = input.get()
+    quotes.append(quote)
 
 def main():
 
     global quotes
 
-    with open("quotes.txt", "r") as file:
+    with open("quotes1.txt", "r") as file:
         for line in file:
             quotes.append(line.rstrip())
 
@@ -32,7 +36,12 @@ def main():
     quoteLabel.place(relx=0.5, rely=0.5, anchor='center')
     quoteLabel.tkraise() 
     root.bind_all("<Right>", quote_next)
-    # root.bind("<Left>", quote_last)
+    entry = tk.Entry(root, width=30)
+    entry.pack(pady=10)
+    entry.place(y=100,x=255)
+    add = tk.Button(root, text="Submit", command=lambda: add_quote(entry))
+    add.place(y=120,x=255)
+    add.pack(pady=5)
     root.mainloop()
 
 if __name__ == "__main__":
