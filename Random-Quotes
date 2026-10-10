@@ -4,20 +4,28 @@ import random
 root = tk.Tk()
 quoteLabel = tk.Label(root, wraplength=250, text="Press right to see stoic quotes")
 quotes = []
+quote = None
 # def quote_last(direction):
 #     global quoteLabel
 #     quoteLabel.configure(text="last")
     
 
 def quote_next(direction=None):
-    global quoteLabel, quotes
-    quote = random.choice(quotes)
-    quoteLabel.configure(text=quote)
+    global quoteLabel, quotes, quote
+    if quotes:
+        quote = random.choice(quotes)
+        quoteLabel.configure(text=quote)
+    else:
+        quoteLabel.configure(text="No quotes left!")
     
 def add_quote(input):
     global quotes
     quote = input.get()
     quotes.append(quote)
+
+def remove_quote(input):
+    global quotes
+    quotes.remove(input)
 
 def main():
 
@@ -38,10 +46,11 @@ def main():
     root.bind_all("<Right>", quote_next)
     entry = tk.Entry(root, width=30)
     entry.pack(pady=10)
-    entry.place(y=100,x=255)
-    add = tk.Button(root, text="Submit", command=lambda: add_quote(entry))
-    add.place(y=120,x=255)
+    add = tk.Button(root, text="Add Quote", command=lambda: add_quote(entry))
     add.pack(pady=5)
+    global quote
+    delete = tk.Button(root, text="Remove Quote", command=lambda: remove_quote(quote))
+    delete.pack(pady=5)
     root.mainloop()
 
 if __name__ == "__main__":
