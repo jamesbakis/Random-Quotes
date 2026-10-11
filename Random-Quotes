@@ -20,12 +20,24 @@ def quote_next(direction=None):
     
 def add_quote(input):
     global quotes
-    quote = input.get()
-    quotes.append(quote)
+    with open("quotes1.txt", "a") as file:
+        quote = input.get()
+        file.write("\n    \"" + quote + "\"")
+        quotes.append(quote)
 
 def remove_quote(input):
     global quotes
     quotes.remove(input)
+    
+    quoteToRemove = input
+
+    with open("quotes1.txt", "r") as file:
+        content = file.read()
+
+    updatedQuotes = content.replace(quoteToRemove, "")
+
+    with open("quotes1.txt", "w") as file:
+        file.write(updatedQuotes)
 
 def main():
 
