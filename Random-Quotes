@@ -27,17 +27,19 @@ def add_quote(input):
 
 def remove_quote(input):
     global quotes
-    quotes.remove(input)
+    if input in quotes:
+        quotes.remove(input)
+
     
-    quoteToRemove = input
+        quoteToRemove = input
 
-    with open("quotes1.txt", "r") as file:
-        content = file.read()
+        with open("quotes1.txt", "r") as file:
+            content = file.read()
 
-    updatedQuotes = content.replace(quoteToRemove, "")
+        updatedQuotes = content.replace(quoteToRemove, "")
 
-    with open("quotes1.txt", "w") as file:
-        file.write(updatedQuotes)
+        with open("quotes1.txt", "w") as file:
+            file.write(updatedQuotes)
 
 def main():
 
