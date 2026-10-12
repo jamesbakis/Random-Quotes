@@ -1,13 +1,12 @@
 import tkinter as tk
-import random
+import random, os
 
 root = tk.Tk()
 quoteLabel = tk.Label(root, wraplength=250, text="Press right to see stoic quotes")
 quotes = []
 quote = None
-# def quote_last(direction):
-#     global quoteLabel
-#     quoteLabel.configure(text="last")
+randomQuotesFile = "C:/RandomQuotes/randomquotes.txt"
+directory = "C:/RandomQuotes"
     
 
 def quote_next(direction=None):
@@ -19,43 +18,42 @@ def quote_next(direction=None):
         quoteLabel.configure(text="No quotes left!")
     
 def add_quote(input):
-    global quotes
-    with open("quotes1.txt", "a") as file:
+    global quotes, randomQuotesFile
+    with open(randomQuotesFile, "a") as file:
         quote = input.get()
         file.write("\n    \"" + quote + "\"")
         quotes.append(quote)
 
 def remove_quote(input):
-    global quotes
+    global quotes, randomQuotesFile
     if input in quotes:
         quotes.remove(input)
 
-        with open("quotes1.txt", "w") as file:
+        with open(randomQuotesFile, "w") as file:
             for quote in quotes:
                 file.write(quote + "\n")
 
 def main():
 
-    global quotes
+    global quotes, randomQuotesFile, root, quoteLabel, quote, directory
 
-    with open("quotes1.txt", "r") as file:
-        for line in file:
-            quotes.append(line.rstrip())
-
-
-    global root
+    os.mkdir(directory)
+    
+    open(randomQuotesFile, "x")
     root.title("Random Quotes")
     root.configure(background="black")
     root.geometry("700x700+300+0")
-    global quoteLabel
+    root.bind_all("<Right>", quote_next)
+
     quoteLabel.place(relx=0.5, rely=0.5, anchor='center')
     quoteLabel.tkraise() 
-    root.bind_all("<Right>", quote_next)
+    
     entry = tk.Entry(root, width=30)
     entry.pack(pady=10)
+
     add = tk.Button(root, text="Add Quote", command=lambda: add_quote(entry))
     add.pack(pady=5)
-    global quote
+    
     delete = tk.Button(root, text="Remove Quote", command=lambda: remove_quote(quote))
     delete.pack(pady=5)
     root.mainloop()
