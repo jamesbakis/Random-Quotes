@@ -2,3 +2,6 @@ quotes1.txt
 dist
 build
 Random-Quotes.spec
+*.jpg
+*.ico
+*.png
