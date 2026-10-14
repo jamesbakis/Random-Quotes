@@ -37,7 +37,8 @@ def remove_quote(input):
 
         with open(randomQuotesFile, "w") as file:
             for quote in quotes:
-                file.write(quote + "\n")
+                if quote != "\n":
+                    file.write(quote.strip() + "\n")
             file.close()
 
 def main():
