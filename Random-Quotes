@@ -12,6 +12,8 @@ def quote_next(direction=None):
     res = cur.execute("SELECT quote FROM quotes")
     quoteLabel.configure(text=res.fetchall()[1][0])   
 
+def add_quote():
+    pass
 def main():
     
     cur.execute(""" INSERT INTO quotes VALUES
@@ -37,7 +39,14 @@ def main():
     quoteLabel.place(relx=0.5, rely=0.5, anchor='center')
     quoteLabel.tkraise() 
     root.bind_all("<Right>", quote_next)
-    # root.bind("<Left>", quote_last)
+
+    entry = tk.Entry(root, width=30)
+    entry.pack(pady=10)
+    
+    root.bind_all("<Return>", lambda event: add_quote(entry))
+    add = tk.Button(root, text="Add Quote", command=lambda: add_quote(entry))
+    add.pack(pady=5)
+    
     root.mainloop()
 
 if __name__ == "__main__":
