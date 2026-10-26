@@ -9,21 +9,15 @@ cx = sqlite3.connect("test.db")
 cur = cx.cursor()    
 
 def quote_next(direction=None):
-    res = cur.execute("SELECT quote FROM quotes")
-    quoteLabel.configure(text=res.fetchall()[1][0])   
-
-def add_quote():
-    pass
-def main():
-    
-    cur.execute(""" INSERT INTO quotes VALUES
-        ('Marcus Aurelius'),
-        ('Seneca')
-        """)
-    res = cur.execute("SELECT quote FROM quotes")
-    print(res.fetchall()[1])
     column_length = cur.execute("SELECT COUNT(*) AS column_length FROM quotes")
-    print(column_length.fetchone()[0]) 
+    index = int(random.random() * column_length.fetchone()[0])
+    res = cur.execute("SELECT quote FROM quotes")
+    quoteLabel.configure(text=res.fetchall()[index][0])   
+
+def add_quote(input):
+    quote = "\"" + input.get() + "\""
+    cur.execute(f"INSERT INTO quotes VALUES ('{quote}')")
+def main(): 
     global quotes
 
     with open("quotes.txt", "r") as file:
@@ -35,6 +29,7 @@ def main():
     root.title("Random Quotes")
     root.configure(background="black")
     root.geometry("700x700+300+0")
+    
     global quoteLabel
     quoteLabel.place(relx=0.5, rely=0.5, anchor='center')
     quoteLabel.tkraise() 
