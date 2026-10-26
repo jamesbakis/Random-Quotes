@@ -1,5 +1,6 @@
 import tkinter as tk
 import random
+import sqlite3
 
 root = tk.Tk()
 quoteLabel = tk.Label(root, wraplength=250, text="Press right to see stoic quotes")
@@ -16,7 +17,16 @@ def quote_next(direction=None):
     
 
 def main():
-
+    cx = sqlite3.connect("test.db")
+    cur = cx.cursor()
+    cur.execute(""" INSERT INTO quotes VALUES
+        ('Marcus Aurelius'),
+        ('Seneca')
+        """)
+    res = cur.execute("SELECT quote FROM quotes")
+    print(res.fetchall()[1])
+    column_length = cur.execute("SELECT COUNT(*) AS column_length FROM quotes")
+    print(column_length.fetchone()[0]) 
     global quotes
 
     with open("quotes.txt", "r") as file:
