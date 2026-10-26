@@ -5,20 +5,15 @@ import sqlite3
 root = tk.Tk()
 quoteLabel = tk.Label(root, wraplength=250, text="Press right to see stoic quotes")
 quotes = []
-# def quote_last(direction):
-#     global quoteLabel
-#     quoteLabel.configure(text="last")
-    
+cx = sqlite3.connect("test.db")
+cur = cx.cursor()    
 
 def quote_next(direction=None):
-    global quoteLabel, quotes
-    quote = random.choice(quotes)
-    quoteLabel.configure(text=quote)
-    
+    res = cur.execute("SELECT quote FROM quotes")
+    quoteLabel.configure(text=res.fetchall()[1][0])   
 
 def main():
-    cx = sqlite3.connect("test.db")
-    cur = cx.cursor()
+    
     cur.execute(""" INSERT INTO quotes VALUES
         ('Marcus Aurelius'),
         ('Seneca')
