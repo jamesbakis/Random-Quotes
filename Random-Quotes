@@ -4,7 +4,6 @@ import sqlite3
 
 root = tk.Tk()
 quoteLabel = tk.Label(root, wraplength=250, text="Press right to see stoic quotes")
-quotes = []
 cx = sqlite3.connect("test.db")
 cur = cx.cursor()    
 
@@ -17,19 +16,23 @@ def quote_next(direction=None):
 def add_quote(input):
     quote = "\"" + input.get() + "\""
     cur.execute(f"INSERT INTO quotes VALUES ('{quote}')")
+    cx.commit()
+
+def remove_quote(input):
+    global global_index
+    cur.execute(f"DELETE FROM quotes WHERE rowid = {global_index}")
+    cx.commit()
 def main(): 
-    global quotes
-
-    with open("quotes.txt", "r") as file:
-        for line in file:
-            quotes.append(line.rstrip())
-
+    if cur.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='quotes'"):
+        pass
+    else:
+        cur.execute("CREATE TABLE quotes(quote)")
 
     global root
     root.title("Random Quotes")
     root.configure(background="black")
     root.geometry("700x700+300+0")
-    
+
     global quoteLabel
     quoteLabel.place(relx=0.5, rely=0.5, anchor='center')
     quoteLabel.tkraise() 
@@ -41,6 +44,9 @@ def main():
     root.bind_all("<Return>", lambda event: add_quote(entry))
     add = tk.Button(root, text="Add Quote", command=lambda: add_quote(entry))
     add.pack(pady=5)
+
+    delete = tk.Button(root, text="Remove Quote", command=lambda: remove_quote(quote))
+    delete.pack(pady=5)
     
     root.mainloop()
 
